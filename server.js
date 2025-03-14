@@ -2,7 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require('cors');
 const morgan = require("morgan");
+
 const connectDB = require("./config/db");
+
+const analyticsRoute = require("./routes/analyticsRoute");
+const userRoutes = require("./routes/userRoutes");
+const bioLinkRoutes = require("./routes/bioLinkRoute");
 
 dotenv.config();
 connectDB();
@@ -23,6 +28,10 @@ app.get("/", (req, res) => {
         message: "Welcome to the API"
     });
 });
+
+app.use("/api/user", userRoutes);
+app.use("/api/bioLink", bioLinkRoutes);
+app.use("/api/analytics", analyticsRoute);
 
 const PORT = process.env.PORT || 8000;
 
