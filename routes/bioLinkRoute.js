@@ -14,7 +14,7 @@ router.post("/create", authMiddleware, async (req, res) => {
 
         if (!rinnkuUrl) return res.status(400).json({ message: "Biolink username is required." });
 
-        rinnkuUrl = rinnkuUrl.trim().toLowerCase();
+        rinnkuUrl = rinnkuUrl.trim();
 
         if (!isValidUsername(rinnkuUrl)) {
             return res.status(400).json({ message: "Invalid username. Use 3-30 letters, numbers, - or _." });
@@ -57,7 +57,7 @@ router.put("/update", authMiddleware, async (req, res) => {
         const existingUser = await User.findOne({ rinnkuUrl });
         if (existingUser) return res.status(400).json({ message: "This username is already taken." });
 
-        const user = await User.findByIdAndUpdate (
+        const user = await User.findByIdAndUpdate(
             userId,
             { rinnkuUrl },
             { new: true }
