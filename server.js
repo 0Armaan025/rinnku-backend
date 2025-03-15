@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const analyticsRoute = require("./routes/analyticsRoute");
 const userRoutes = require("./routes/userRoutes");
 const bioLinkRoutes = require("./routes/bioLinkRoute");
+const promoCodeRoute = require("./routes/promoCodeRoute");
 
 dotenv.config();
 connectDB();
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/bioLink", bioLinkRoutes);
 app.use("/api/analytics", analyticsRoute);
+app.use("/api/promocode", promoCodeRoute);
 
 const PORT = process.env.PORT || 8000;
 

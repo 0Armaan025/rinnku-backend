@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     googleId: { type: String },
     theme: { type: String, default: 'light', code: '' },
     avatar: { type: String },
+    promoCodeApplied: { type: String, required: false },
     isPremium: { type: Boolean, default: false },
     links: [
         {
