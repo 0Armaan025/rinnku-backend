@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String },
+    password: { type: String, default: null }, // Null for Google users
+    googleId: { type: String, default: null }, // Store Google ID for OAuth users
+    avatar: { type: String, default: null }, // Profile picture (Google users get it from Google)
     qrCode: { type: String, required: false },
     rinnkuUrl: { type: String, required: false },
-    googleId: { type: String },
-    theme: { type: String, default: 'light', code: '' },
-    avatar: { type: String },
+    theme: { type: String, default: 'light' },
     promoCodeApplied: { type: String, required: false },
     isPremium: { type: Boolean, default: false },
     links: [
@@ -18,8 +18,7 @@ const UserSchema = new mongoose.Schema({
             icon: String,
         }
     ],
-    createdAt: { type: Date, default: Date.now },
-    refreshToken: { type: String },// Store the refresh token
+    refreshToken: { type: String, default: null }, // Only used for email/password users
     logs: {
         type: [
             {
@@ -30,9 +29,8 @@ const UserSchema = new mongoose.Schema({
             }
         ],
         default: []
-
-    }
-
+    },
+    createdAt: { type: Date, default: Date.now }
 });
 
 const User = mongoose.model('User', UserSchema);
