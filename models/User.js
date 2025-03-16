@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     layout: { type: String, default: "standard" },
     animation: { type: String, default: "scale" },
     theme: { type: String, default: 'midnight' },
-    promoExpirty: { type: Date, required: false },
+    promoExpiry: { type: Date, required: false },
     promoCode: { type: String, required: false },
     isPremium: { type: Boolean, default: false },
     links: [

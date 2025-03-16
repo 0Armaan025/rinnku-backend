@@ -66,8 +66,9 @@ router.post('/apply/:code', authMiddleWare, async (req, res) => {
                 });
             }
             else {
-                user.promoCodeApplied = code;
+                user.promoCode = code;
                 user.isPremium = true;
+                user.promoExpiry = promoCode.expiresAt;
                 await user.save();
                 return res.status(200).json({
                     message: "Promo code applied successfully",
