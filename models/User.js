@@ -8,16 +8,34 @@ const UserSchema = new mongoose.Schema({
     avatar: { type: String, default: null }, // Profile picture (Google users get it from Google)
     qrCode: { type: String, required: false },
     rinnkuUrl: { type: String, required: false },
-    theme: { type: String, default: 'light' },
-    promoCodeApplied: { type: String, required: false },
+    bio: {
+        type: String,
+        required: false,
+    },
+    layout: { type: String, default: "standard" },
+    animation: { type: String, default: "scale" },
+    theme: { type: String, default: 'midnight' },
+    promoExpirty: { type: Date, required: false },
+    promoCode: { type: String, required: false },
     isPremium: { type: Boolean, default: false },
     links: [
         {
             name: String,
             url: String,
-            icon: String,
+            icon: { type: String, default: 'social' },
+            animation: { type: String, default: 'scale' },
+
         }
     ],
+
+    roundedCorners: { type: Boolean, default: true },
+    showShadows: { type: Boolean, default: true },
+    showBorders: { type: Boolean, default: true },
+    fullWidth: { type: Boolean, default: true },
+    showAvatar: { type: Boolean, default: true },
+    showIcons: { type: Boolean, default: true },
+    showBio: { type: Boolean, default: true },
+
     refreshToken: { type: String, default: null }, // Only used for email/password users
     logs: {
         type: [
