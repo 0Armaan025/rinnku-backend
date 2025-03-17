@@ -16,6 +16,15 @@ router.post("/create", async (req, res) => {
 
     try {
 
+        const { maxUsers } = req.body;
+
+        if (!maxUsers || isNan(maxUsers) || maxUsers <= 0) {
+            return res.status(400).json({
+                message: "Invalid maxUsers",
+            });
+        }
+
+
         const code = [...Array(16)]
             .map(() => Math.floor(Math.random() * 36).toString(36))
             .join('')
@@ -51,9 +60,9 @@ router.post('/apply/:code', authMiddleWare, async (req, res) => {
                 message: "Invalid promo code",
             });
         }
-        else if (promoCode.expiresAt < new Date()) {
+        else if (promoCode.expiresAt < new Date() || promoCode.currentUsers >= promoCode.maxUsers) {
             return res.status(400).json({
-                message: "Promo code expired",
+                message: "Promo code expired or max use left reached",
             });
         }
         else {
@@ -69,6 +78,8 @@ router.post('/apply/:code', authMiddleWare, async (req, res) => {
                 user.promoCode = code;
                 user.isPremium = true;
                 user.promoExpiry = promoCode.expiresAt;
+                promoCode.currentUsers += 1;
+                await promoCode.save();
                 await user.save();
                 return res.status(200).json({
                     message: "Promo code applied successfully",

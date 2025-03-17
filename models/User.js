@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
     showAvatar: { type: Boolean, default: true },
     showIcons: { type: Boolean, default: true },
     showBio: { type: Boolean, default: true },
-
+    isPublic: { type: Boolean, default: true },
     refreshToken: { type: String, default: null }, // Only used for email/password users
     logs: {
         type: [

@@ -7,6 +7,8 @@ const PromoCodeSchema = new mongoose.Schema({
 
     createdAt: { type: Date, default: Date.now },
     expiresAt: { type: Date, required: true },
+    maxUsers: { type: Number, default: 1 },
+    currentUsers: { type: Number, default: 0 },
 });
 
 const PromoCode = mongoose.model("PromoCode", PromoCodeSchema);
