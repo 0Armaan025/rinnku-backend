@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema({
     rinnkuUrl: { type: String, required: false },
     bio: {
         type: String,
-        required: false,
+
+        default: "Hi there, I'm using Rinkuu!"
     },
     layout: { type: String, default: "standard" },
     animation: { type: String, default: "scale" },

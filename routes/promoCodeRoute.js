@@ -17,8 +17,9 @@ router.post("/create", async (req, res) => {
     try {
 
         const { maxUsers } = req.body;
+        // const maxUsersNum = Number(maxUsers);
 
-        if (!maxUsers || isNan(maxUsers) || maxUsers <= 0) {
+        if (!maxUsers || maxUsers <= 0) {
             return res.status(400).json({
                 message: "Invalid maxUsers",
             });
@@ -34,6 +35,7 @@ router.post("/create", async (req, res) => {
         const promoCode = new PromoCode({
             code,
             expiresAt,
+            maxUsers: maxUsers,
         });
         await promoCode.save();
         return res.status(200).json({
@@ -75,15 +77,20 @@ router.post('/apply/:code', authMiddleWare, async (req, res) => {
                 });
             }
             else {
-                user.promoCode = code;
-                user.isPremium = true;
-                user.promoExpiry = promoCode.expiresAt;
-                promoCode.currentUsers += 1;
-                await promoCode.save();
-                await user.save();
-                return res.status(200).json({
-                    message: "Promo code applied successfully",
-                });
+
+                if (user.isPremium && user.promoCode != "" || user.promoCode != " ") {
+                    user.promoCode = code;
+                    user.isPremium = true;
+                    user.promoExpiry = promoCode.expiresAt;
+                    promoCode.currentUsers += 1;
+                    await promoCode.save();
+                    await user.save();
+                    return res.status(200).json({
+                        message: "Promo code applied successfully",
+                    });
+                }
+
+
             }
 
 
