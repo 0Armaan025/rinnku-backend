@@ -6,9 +6,10 @@ const AnalyticsSchema = new mongoose.Schema({
     clicks: [
         {
             linkId: mongoose.Schema.Types.ObjectId,
+            linkName: String,
             timestamp: { type: Date, default: Date.now },
             country: String,
-            
+
             device: String,
             ip: String,
         }

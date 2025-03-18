@@ -72,14 +72,17 @@ router.post("/track-visit", async (req, res) => {
 
 router.post("/track-click", async (req, res) => {
     try {
-        const { rinnkuUrl, linkId, referrer } = req.body;
+        const { rinnkuUrl, linkId, linkName } = req.body;
 
-        if (!rinnkuUrl || !linkId) return res.status(400).json({ message: "Missing rinnkuUrl or linkId." });
+        if (!rinnkuUrl || !linkId || !linkName) return res.status(400).json({ message: "Missing rinnkuUrl or linkId." });
 
         if (!mongoose.Types.ObjectId.isValid(linkId)) return res.status(400).json({ message: "Invalid linkId." });
 
         const ip = getIp(req);
         const device = req.headers["user-agent"] || "Unknown Device";
+
+        // 🔥 Extract referrer from headers
+        const referrer = req.headers["referer"] || req.headers["origin"] || "Direct";
 
         let analytics = await Analytics.findOne({ rinnkuUrl });
 
@@ -87,14 +90,14 @@ router.post("/track-click", async (req, res) => {
             analytics = new Analytics({ rinnkuUrl, totalVisits: 0, clicks: [] });
         }
 
-        analytics.clicks.push({ linkId, timestamp: new Date(), referrer: referrer || "Direct", device, ip });
+        analytics.clicks.push({ linkId, timestamp: new Date(), referrer, device, ip, linkName });
 
         await analytics.save();
 
-        // 🔥 Log this click in the user's logs
-        await logUserAction(rinnkuUrl, "click", ip, "Unknown", "biolink-click");
+        
+        await logUserAction(rinnkuUrl, "click", ip, referrer, "biolink-click");
 
-        res.status(200).json({ message: "Click tracked successfully." });
+        res.status(200).json({ message: "Click tracked successfully.", referrer });
 
     } catch (error) {
         console.error(error);
