@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
     theme: { type: String, default: 'midnight' },
     promoExpiry: { type: Date, required: false },
     promoCode: { type: String, required: false },
+    views: { type: Number, default: 0 },
     isPremium: { type: Boolean, default: false },
     links: [
         {

@@ -38,6 +38,14 @@ router.post("/track-visit", async (req, res) => {
         const ip = getIp(req);
         const userAgent = req.headers["user-agent"] || "Unknown Device";
 
+        const user = await User.findOne({ rinnkuUrl });
+
+        if (user) {
+            // in user's views field increment it by 1
+            user.views = (user.views || 0) + 1;
+            await user.save();
+        }
+
         let country = "Unknown";
         try {
             const geoResponse = await axios.get(`https://ipapi.co/${ip}/json/`);
@@ -94,7 +102,7 @@ router.post("/track-click", async (req, res) => {
 
         await analytics.save();
 
-        
+
         await logUserAction(rinnkuUrl, "click", ip, referrer, "biolink-click");
 
         res.status(200).json({ message: "Click tracked successfully.", referrer });

@@ -113,14 +113,7 @@ router.get("/:name", async (req, res) => {
         if (!user) return res.status(404).json({ error: "User not found" });
 
         res.json({
-            name: user.name,
-            email: user.email,
-            profilePic: user.avatar,
-            links: user.links,
-            isPremium: user.isPremium,
-            rinnkuUrl: user.rinnkuUrl,
-            qrCode: user.qrCode,
-            theme: user.theme,
+            user
         });
     } catch (error) {
         res.status(500).json({ error: "Server error" });
