@@ -20,13 +20,13 @@ const app = express();
 
 // middlewares
 
-const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per window
-    message: { error: "Too many requests, please try again later." },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
+// const apiLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100, // Limit each IP to 100 requests per window
+//     message: { error: "Too many requests, please try again later." },
+//     standardHeaders: true,
+//     legacyHeaders: false,
+// });
 
 app.use(express.json());
 app.use(cors());
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
     });
 });
 
-app.use("/api", apiLimiter);
+// app.use("/api", apiLimiter);
 
 app.use("/api/user", userRoutes);
 app.use("/api/bioLink", bioLinkRoutes);

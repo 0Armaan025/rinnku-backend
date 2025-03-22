@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).json({ error: "All fields are required" });
 
-    const user = await User.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ error: "User not found" });
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -81,15 +81,31 @@ router.get('/me', authMiddleware, async (req, res) => {
 router.put('/update', authMiddleware, async (req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.user.id);
-        const { name, avatar } = req.body;
 
-        const updatedUser = await User.findByIdAndUpdate(userId, { name, avatar }, { new: true }).select("-password");
+
+        const existingUser = await User.findById(userId).lean();
+        if (!existingUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+
+        const updatedUserData = { ...existingUser, ...req.body };
+
+
+        const updateData = Object.fromEntries(
+            Object.entries(updatedUserData).filter(([_, value]) => value !== undefined)
+        );
+
+
+        const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true }).select("-password");
 
         res.json(updatedUser);
     } catch (error) {
+        console.error("Update error:", error);
         res.status(500).json({ error: "Server error" });
     }
 });
+
 
 router.get("/:name", async (req, res) => {
     try {

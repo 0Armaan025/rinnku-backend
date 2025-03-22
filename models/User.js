@@ -23,9 +23,10 @@ const UserSchema = new mongoose.Schema({
         {
             name: String,
             url: String,
-            icon: { type: String, default: 'social' },
+            type: { type: String, default: 'social' },
             animation: { type: String, default: 'scale' },
-
+            image: { type: String, default: "" },
+            hidden: { type: Boolean, default: false },
         }
     ],
 
