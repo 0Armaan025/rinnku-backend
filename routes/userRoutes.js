@@ -109,7 +109,7 @@ router.put('/update', authMiddleware, async (req, res) => {
 
 router.get("/:name", async (req, res) => {
     try {
-        const user = await User.findOne({ name: req.params.name });
+        const user = await User.findOne({ rinnkuUrl: req.params.name });
         if (!user) return res.status(404).json({ error: "User not found" });
 
         res.json({
